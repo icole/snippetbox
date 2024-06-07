@@ -19,8 +19,14 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	dbPass := flag.String("dbPass", "pass", "DB Password")
+
+	dsn := flag.String("dsn", "", "MySQL data source name")
 	flag.Parse()
+
+	if *dsn == "" {
+		*dsn = "web:" + *dbPass + "@/snippetbox?parseTime=true"
+	}
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
